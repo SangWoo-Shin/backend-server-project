@@ -4,7 +4,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 
-
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -20,5 +19,6 @@ import { AuthModule } from './auth/auth.module';
     UserModule,
     AuthModule
   ],
+  providers: []
 })
 export class AppModule {}
