@@ -34,6 +34,10 @@ export class UserService {
     return this.userModel.findOne({ email });
   }
 
+  async findById(userId: string): Promise<User | null> {
+    return this.userModel.findById(userId);
+  }
+
   async validateUser(email: string, password: string): Promise<User> {
     const user = await this.findByEmail(email);
     if(!user) {
