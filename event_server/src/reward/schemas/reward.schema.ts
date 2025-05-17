@@ -1,19 +1,21 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
 
+export type RewardDocument = Reward & Document;
+
 @Schema({ timestamps: true })
-export class Reward extends Document {
-  @Prop({ required: true, type: Types.ObjectId, ref: 'Event' })
+export class Reward {
+  @Prop({ required: true })
+  name: string;
+
+  @Prop({ required: true })
+  type: string;
+
+  @Prop({ required: true })
+  quantity: number;
+
+  @Prop({ type: Types.ObjectId, ref: 'Event', required: true })
   eventId: Types.ObjectId;
-
-  // 보상 종류 (포인트, 아이템, 쿠폰등)
-  @Prop({ required: true })
-
-  @Prop({ required: true })
-  amount: number;
-
-  @Prop()
-  description: string;
 }
 
 export const RewardSchema = SchemaFactory.createForClass(Reward);
