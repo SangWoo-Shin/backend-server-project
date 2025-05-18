@@ -86,6 +86,17 @@ NestJS, MongoDB, JWT, Docker를 활용한 이벤트/보상 관리 시스템입�
 
 ---
 
+## 📘 Swagger 문서 미리보기
+
+#### 🔐 Auth 서버
+
+#### 🎉 Event 서버
+
+#### 🌐 Gateway 서버
+
+---
+
+
 ## 📁 폴더 구조 예시
 
 ```bash
