@@ -1,56 +1,45 @@
-import { Controller, Headers, Post, Body, Get, Param, ForbiddenException } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, UseGuards } from '@nestjs/common';
+import { ApiTags, ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 import { RewardService } from './reward.service';
 import { CreateRewardDto } from './dto/create-reward.dto';
 import { Reward } from './schemas/reward.schema';
-import { verifyUser } from 'src/utils/verifyUser';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guards';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { Roles } from 'src/auth/decorators/roles.decorator';
+import { UserRole } from 'src/auth/roles.enum';
 
+@ApiTags('Rewards')
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('rewards')
 export class RewardController {
   constructor(private readonly rewardService: RewardService) {}
 
+  @ApiOperation({ summary: "신규 보상 생성 - 관리자 또는 운영자만 가능"})
+  @Roles(UserRole.ADMIN, UserRole.OPERATOR)
   @Post()
-  async createReward(
-    @Body() createRewardDto: CreateRewardDto,
-    @Headers('Authorization') authHeader: string, 
-  ): Promise<Reward> {
-    const user = await verifyUser(authHeader);
-    if(!['ADMIN', 'OPERATOR'].includes(user.role)) {
-        throw new ForbiddenException('권한이 없습니다.');
-    }
-
+  async createReward( @Body() createRewardDto: CreateRewardDto ): Promise<Reward> {
     return this.rewardService.createReward(createRewardDto);
   }
 
+  @ApiOperation({ summary: "모든 보상목록 조회 - 관리자, 운영자, 감사자 권한"})
+  @Roles(UserRole.ADMIN, UserRole.OPERATOR, UserRole.AUDITOR)
   @Get()
-  async getAllRewards(@Headers('Authorization') authHeader: string): Promise<Reward[]> {
-    const user = await verifyUser(authHeader);
-    if (!['ADMIN', 'OPERATOR', 'AUDITOR'].includes(user.role)) {
-        throw new ForbiddenException('권한이 없습니다.');
-    }
-      return this.rewardService.findAll();
+  async getAllRewards(): Promise<Reward[]> {
+    return this.rewardService.findAll();
   }
 
+  @ApiOperation({ summary: "이벤트 ID로 보상정보 조회 - 관리자, 운영자, 감사자 권한"})
+  @Roles(UserRole.ADMIN, UserRole.OPERATOR, UserRole.AUDITOR)
   @Get('event/:eventId')
-  async getRewardsByEvent(
-    @Param('eventId') eventId: string,
-    @Headers('Authorization') authHeader: string,
-  ): Promise<Reward[]> {
-    const user = await verifyUser(authHeader);
-    if (!['ADMIN', 'OPERATOR', 'AUDITOR'].includes(user.role)) {
-        throw new ForbiddenException('권한이 없습니다.');
-    }
-      return this.rewardService.findByEventId(eventId);
+  async getRewardsByEvent( @Param('eventId') eventId: string ): Promise<Reward[]> {
+    return this.rewardService.findByEventId(eventId);
   }
 
+  @ApiOperation({ summary: "보상 ID로 보상정보 조회 - 관리자, 운영자, 감사자 권한"})
+  @Roles(UserRole.ADMIN, UserRole.OPERATOR, UserRole.AUDITOR)
   @Get(':id')
-  async getRewardById(
-    @Param('id') id: string,
-    @Headers('Authorization') authHeader: string,
-  ): Promise<Reward | null> {
-    const user = await verifyUser(authHeader);
-    if (!['ADMIN', 'OPERATOR', 'AUDITOR'].includes(user.role)) {
-        throw new ForbiddenException('권한이 없습니다.');
-    }
-      return this.rewardService.findById(id);
+  async getRewardById( @Param('id') id: string ): Promise<Reward | null> {
+    return this.rewardService.findById(id);
   }
 }

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Event, EventDocument } from './schemas/event.schema';
@@ -21,5 +21,15 @@ export class EventService {
 
   async getEventById(id: string): Promise<Event | null> {
     return this.eventModel.findById(id);
+  }
+
+  async deactivateEvent(id: string): Promise<Event> {
+    const event = await this.eventModel.findById(id);
+    if (!event) {
+      throw new NotFoundException('해당 이벤트를 찾을 수 없습니다.');
+    }
+
+    event.isActive = false;
+    return event.save();
   }
 }

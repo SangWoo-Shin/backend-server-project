@@ -63,8 +63,9 @@ export class RewardRequestService {
     requests.map(async (req) => {
       let userInfo = {};
       try {
+        const baseUrl = process.env.AUTH_SERVER_URL || 'http://localhost:3001';
         const res = await lastValueFrom(
-          this.httpService.get(`${process.env.AUTH_SERVER_URL}/auth/validate?userId=${req.user}`)
+          this.httpService.get(`${baseUrl}/auth/validate?userId=${req.user}`)
         );
         userInfo = res.data;
       } catch (e) {
