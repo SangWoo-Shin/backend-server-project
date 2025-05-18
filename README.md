@@ -89,10 +89,13 @@ NestJS, MongoDB, JWT, Docker를 활용한 이벤트/보상 관리 시스템입�
 ## 📘 Swagger 문서 미리보기
 
 #### 🔐 Auth 서버
+![auth-swagger](./assets/Swagger-auth.png)
 
 #### 🎉 Event 서버
+![event-swagger](./assets/Swagger-event.png)
 
 #### 🌐 Gateway 서버
+![gateway-swagger](./assets/Swagger-gateway.png)
 
 ---
 
