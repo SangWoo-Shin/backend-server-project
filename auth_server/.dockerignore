@@ -1,0 +1,10 @@
+# NestJS 관련
+dist
+node_modules
+
+# 환경 파일
+.env
+
+# OS/IDE 관련
+.DS_Store
+*.log
