@@ -65,10 +65,10 @@ NestJS, MongoDB, JWT, Docker를 활용한 이벤트/보상 관리 시스템입�
 
 ## 📦 실행 방법 (Docker 기반)
 
-1. `.env` 파일 설정 (루트 및 각 서비스)
+1. `.env` 파일 설정 각 서비스 디렉토리(auth_server, event_server)
     ```env
     JWT_SECRET=jwt-secret-key
-    MONGODB_URI=mongodb+srv://sdu0333:abcd1234@usercluster.wnu7sub.mongodb.net/mydb?retryWrites=true&w=majority
+    MONGODB_URI=mongodb://mongo:27017/mydb
     ```
 
 2. Docker 실행
@@ -77,9 +77,12 @@ NestJS, MongoDB, JWT, Docker를 활용한 이벤트/보상 관리 시스템입�
     ```
 
 3. Swagger 문서 확인
-    - Gateway: http://localhost:3002/api-docs
-    - Auth: http://localhost:3001/api-docs
-    - Event: http://localhost:3000/api-docs
+
+| 서비스         | 포트          | Swagger 주소                    |
+|--------------|--------------|--------------------------------|
+| Gateway      | 3002         | http://localhost:3002/api-docs |
+| Auth         | 3001         | http://localhost:3001/api-docs |
+| Event        | 3000         | http://localhost:3000/api-docs |
 
 ---
 
