@@ -7,7 +7,7 @@ export class ProxyService {
   constructor(private readonly httpService: HttpService) {}
 
   private getTargetBaseUrl(path: string): string {
-    if (path.startsWith('/auth')) {
+    if (path.startsWith('/auth') || path.startsWith('/users')) {
       return 'http://localhost:3001';
     } else {
       return 'http://localhost:3000';

@@ -20,9 +20,6 @@ import { ProxyModule } from './proxy/proxy.module';
     ProxyModule,
   ],
   controllers: [],
-  providers: [
-    JwtStrategy,
-    ProxyService,
-  ],
+  providers: [JwtStrategy, ProxyService],
 })
 export class AppModule {}

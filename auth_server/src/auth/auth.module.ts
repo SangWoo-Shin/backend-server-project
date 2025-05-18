@@ -10,7 +10,7 @@ import { RolesGuard } from './guards/roles.guard';
 @Module({
   imports: [
     forwardRef(() => UserModule),
-    PassportModule,
+    PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
       secret: 'jwt-secret-key',
       signOptions: { expiresIn: '1h' },

@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { User, UserRole } from './user.schema';
+import { User } from './user.schema';
+import { UserRole } from './roles.enum';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
@@ -17,6 +18,12 @@ export class UserService {
     const existingUser = await this.userModel.findOne({ email });
     if(existingUser) {
         throw new Error('이미 존재하는 이메일입니다.');
+    }
+
+    // 비밀번호 유효성 검사
+    const passwordRegex = /^(?=.*[A-Z])(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-])(?=.{8,})/;
+    if (!passwordRegex.test(password)) {
+      throw new Error('비밀번호는 8자 이상, 대문자 및 특수문자를 포함해야 합니다.');
     }
 
     const saltOrRounds = 10;
@@ -51,4 +58,13 @@ export class UserService {
 
     return user;
   }
+
+  async updateUserRole(userId: string, newRole: UserRole): Promise<User> {
+  const user = await this.userModel.findById(userId);
+  if (!user) {
+    throw new NotFoundException('사용자를 찾을 수 없습니다.');
+  }
+  user.role = newRole;
+  return user.save();
+}
 }

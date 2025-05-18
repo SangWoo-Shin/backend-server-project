@@ -5,6 +5,7 @@ import { AuthProxyController } from './auth.proxy/auth-proxy.controller';
 import { RewardProxyController } from './reward.proxy/reward-proxy.controller';
 import { RewardRequestProxyController } from './reward-request.proxy/reward-request-proxy.controller';
 import { EventProxyController } from './event.proxy/event-proxy.controller';
+import { UserProxyController } from './user.proxy/user-proxy.controller';
 
 @Module({
   imports: [HttpModule],
@@ -13,6 +14,7 @@ import { EventProxyController } from './event.proxy/event-proxy.controller';
     RewardProxyController,
     RewardRequestProxyController,
     EventProxyController,
+    UserProxyController,
   ],
   providers: [ProxyService],
 })
