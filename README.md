@@ -87,7 +87,7 @@ NestJS, MongoDB, JWT, Docker를 활용한 이벤트/보상 관리 시스템입�
 
 <details>
 <summary>📂 구조 보기</summary>
-```
+```bash
 ├── gateway_server
 │   └── src
 │       ├── auth
