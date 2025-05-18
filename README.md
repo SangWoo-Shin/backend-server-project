@@ -68,7 +68,7 @@ NestJS, MongoDB, JWT, Docker를 활용한 이벤트/보상 관리 시스템입�
 1. `.env` 파일 설정 (루트 및 각 서비스)
     ```env
     JWT_SECRET=jwt-secret-key
-    MONGO_URI=mongodb+srv://sdu0333:abcd1234@usercluster.wnu7sub.mongodb.net/mydb?retryWrites=true&w=majority
+    MONGODB_URI=mongodb+srv://sdu0333:abcd1234@usercluster.wnu7sub.mongodb.net/mydb?retryWrites=true&w=majority
     ```
 
 2. Docker 실행
@@ -91,11 +91,13 @@ NestJS, MongoDB, JWT, Docker를 활용한 이벤트/보상 관리 시스템입�
 │       ├── auth
 │       ├── proxy
 │       ├── dto
+│       ├── Dockerfile
 │       └── main.ts
 ├── auth_server
 │   └── src
 │       ├── auth
 │       ├── user
+│       ├── Dockerfile
 │       └── main.ts
 ├── event_server
 │   └── src
@@ -103,7 +105,9 @@ NestJS, MongoDB, JWT, Docker를 활용한 이벤트/보상 관리 시스템입�
 │       ├── reward
 │       ├── reward-request
 │       ├── event
+│       ├── Dockerfile
 │       └── main.ts
+├──  Docker-compose.yml
 ```
 
 ---
