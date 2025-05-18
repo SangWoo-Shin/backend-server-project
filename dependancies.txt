@@ -1,8 +1,0 @@
-npm install nest
-npm install @nestjs/mongoose
-npm install @nestjs/config
-npm install class-validator
-npm install bcrypt
-npm install class-transformer
-npm install @nestjs/jwt @nestjs/passport passport passport-jwt
-npm install -D @types/passport-jwt
