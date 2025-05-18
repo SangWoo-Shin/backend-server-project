@@ -6,7 +6,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   const config = new DocumentBuilder()
-    .setTitle('Auth API')
+    .setTitle('Event API')
     .setDescription('이벤트 서버의 Swagger 문서입니다.')
     .setVersion('1.0')
     .addBearerAuth()
