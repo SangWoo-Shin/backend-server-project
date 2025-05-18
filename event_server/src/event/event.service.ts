@@ -10,19 +10,23 @@ export class EventService {
     @InjectModel(Event.name) private readonly eventModel: Model<EventDocument>,
   ) {}
 
+  // 이벤트 생성
   async createEvent(createEventDto: CreateEventDto): Promise<Event> {
     const newEvent = new this.eventModel(createEventDto);
     return newEvent.save();
   }
 
+  // 모든 이벤트 접근
   async getAllEvents(): Promise<Event[]> {
     return this.eventModel.find();
   }
 
+  // 이벤트 ID로 해당 이벤트 접근
   async getEventById(id: string): Promise<Event | null> {
     return this.eventModel.findById(id);
   }
 
+  // 이벤트 비활성화
   async deactivateEvent(id: string): Promise<Event> {
     const event = await this.eventModel.findById(id);
     if (!event) {

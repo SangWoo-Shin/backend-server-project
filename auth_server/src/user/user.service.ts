@@ -15,6 +15,7 @@ export class UserService {
   }
 
   async createUser(email: string, password: string): Promise<User> {
+    // 이메일 중복 체크
     const existingUser = await this.userModel.findOne({ email });
     if(existingUser) {
         throw new Error('이미 존재하는 이메일입니다.');
@@ -37,14 +38,17 @@ export class UserService {
     return createdUser.save();  
   }
 
+  // 이메일로 유저 조회
   async findByEmail(email: string): Promise<User | null> {
     return this.userModel.findOne({ email });
   }
 
+  // 유저 ID로 유저 조회
   async findById(userId: string): Promise<User | null> {
     return this.userModel.findById(userId);
   }
 
+  // 로그인시 유저 인증 - 이메일과 비밀번호 일치 여부 확인
   async validateUser(email: string, password: string): Promise<User> {
     const user = await this.findByEmail(email);
     if(!user) {
@@ -59,12 +63,13 @@ export class UserService {
     return user;
   }
 
+  // 유저 권한 업데이트
   async updateUserRole(userId: string, newRole: UserRole): Promise<User> {
-  const user = await this.userModel.findById(userId);
-  if (!user) {
-    throw new NotFoundException('사용자를 찾을 수 없습니다.');
+    const user = await this.userModel.findById(userId);
+    if (!user) {
+      throw new NotFoundException('사용자를 찾을 수 없습니다.');
+    }
+    user.role = newRole;
+    return user.save();
   }
-  user.role = newRole;
-  return user.save();
-}
 }
