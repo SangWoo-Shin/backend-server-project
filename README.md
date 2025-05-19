@@ -168,6 +168,31 @@ NestJS, MongoDB, JWT, Docker를 활용한 이벤트/보상 관리 시스템입�
 
 ---
 
+## 🧪 테스트 코드 작성
+
+- 핵심 로직에 대해 단위 테스트를 작성하여 서비스의 안정성을 확보했습니다.
+- NestJS의 `@nestjs/testing`과 Jest를 활용해 `RewardRequestService`의 예외 처리 로직을 검증했습니다.
+
+### ✅ 테스트 대상
+
+| 테스트 항목 | 설명 |
+|-------------|------|
+| 이벤트 기간 외 요청 | 유효하지 않은 시점에 보상 요청 시 `BadRequestException` 발생 |
+| 중복 보상 요청 | 동일 유저가 동일 이벤트/보상에 대해 중복 요청 시 `ConflictException` 발생 |
+
+### ✅ 테스트 결과
+
+```bash
+ PASS  src/reward_request/reward-request.service.spec.ts
+  RewardRequestService
+    ✓ 기한 만료되면 BadRequestException 에러를 나타낼 것 (9 ms)
+    ✓ 이미 중복 요청된 건은 ConflictException 에러를 나타낼 것 (1 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       2 passed, 2 total
+```
+___
+
 ## 📌 참고 사항
 - 조건 검증 로직은 간단한 예시 수준입니다 (ex: 로그인 1시간 이상)
 - 삭제 API는 구현하지 않고 `isActive`를 통한 비활성화 처리
