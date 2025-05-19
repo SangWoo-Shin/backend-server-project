@@ -65,26 +65,65 @@ NestJS, MongoDB, JWT, Docker를 활용한 이벤트/보상 관리 시스템입�
 
 ## 📦 실행 방법 (Docker 기반)
 
-1. `.env` 파일 설정 각 서비스 디렉토리(auth_server, event_server)
+1. 각 서비스 디렉토리에 `.env` 파일을 설정합니다.
+    #### 📍 auth_server/.env
     ```env
-    JWT_SECRET=jwt-secret-key
     MONGODB_URI=mongodb://mongo:27017/mydb
     ```
-
+    #### 📍 event_server/.env
+    ```env
+    AUTH_SERVER_URL=http://auth-server:3001
+    MONGODB_URI=mongodb://mongo:27017/mydb
+    ```
+    #### 📍 gateway_server/.env.docker
+    ```env.docker
+    AUTH_BASE_URL=http://auth-server:3001
+    EVENT_BASE_URL=http://event-server:3000
+    ```
+    
 2. Docker 실행
     ```bash
     docker-compose up --build
     ```
+    
+---
 
-3. Swagger 문서 확인
+## 🧪 초기 더미 데이터 (샘플 계정 및 리소스)
+
+### 👤 유저 목록
+
+| 이메일                 | 비밀번호             | 역할         |
+|----------------------|--------------------|-------------|
+| admin@nexon.com      | Admin123!          | ADMIN       |
+| user@nexon.com       | User123!           | USER        |
+| auditor@nexon.com    | Auditor123!        | AUDITOR     |
+| operator@nexon.com   | Operator123!       | OPERATOR    |
+
+### 📅 이벤트 목록
+
+| 제목                  | 조건 키              | 기간                     | 상태   |
+|----------------------|--------------------|-------------------------|-------|
+| 7일 연속 로그인          | login_7_days       | 2025-05-01 ~ 2025-06-01 | 활성화  | 
+| 버닝 타임! 경험치 2배     | exp_double_event   | 2025-06-10 ~ 2025-06-30 | 활성화  | 
+| 추석맞이 한정판 스킨 지급   | login_once_chuseok | 2025-09-05 ~ 2025-09-15 | 비활성화 | 
+
+### 🎁 보상 목록
+
+| 이름                  | 타입        | 수량  | 연동 이벤트(ID)                           |
+|----------------------|------------|------|----------------------------------------|
+| 7일 출석 기념 선물 상자   | 아이템 상자   | 1    | 682abbddee9c6e2597fd0342 (7일 연속 로그인) |
+| 버닝 부스터 포션         | 버프 아이템   | 3    | 682abc7dee9c6e2597fd0344 (버닝 타임)      |
+| 한정판 코스튬 뽑기권      | 뽑기 쿠폰     | 1    | 682abc8bee9c6e2597fd0346 (추석맞이)       |
+
+---
+
+## 📖 Swagger 문서 확인
 
 | 서비스         | 포트          | Swagger 주소                    |
 |--------------|--------------|--------------------------------|
 | Gateway      | 3002         | http://localhost:3002/api-docs |
 | Auth         | 3001         | http://localhost:3001/api-docs |
 | Event        | 3000         | http://localhost:3000/api-docs |
-
----
 
 ## 📘 Swagger 문서 미리보기
 
@@ -133,10 +172,3 @@ NestJS, MongoDB, JWT, Docker를 활용한 이벤트/보상 관리 시스템입�
 - 조건 검증 로직은 간단한 예시 수준입니다 (ex: 로그인 1시간 이상)
 - 삭제 API는 구현하지 않고 `isActive`를 통한 비활성화 처리
 - 각 서비스는 독립된 Swagger 문서를 통해 확인 가능
-
----
-
-## 💬 설계 의도
-- 실무에서 활용되는 MSA 구조 및 역할 기반 보안 설계 학습 목적
-- 인증/권한 검사는 Gateway에서 공통 처리, 확장성과 유지보수 용이성 확보
-- 실서비스 환경을 고려한 모듈 분리 및 라우팅 구조 설계
