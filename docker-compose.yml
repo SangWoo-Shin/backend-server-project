@@ -41,6 +41,9 @@ services:
     depends_on:
       - auth-server
       - event-server
+    environment:
+      - AUTH_BASE_URL=http://auth-server:3001
+      - EVENT_BASE_URL=http://event-server:3000
 
 volumes:
   mongo_data:

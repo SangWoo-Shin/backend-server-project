@@ -10,9 +10,9 @@ export class ProxyService {
   // 요청 경로에 따라 요청을 보낼 대상 서비스의 Base URL 결정
   private getTargetBaseUrl(path: string): string {
     if (path.startsWith('/auth') || path.startsWith('/users')) {
-      return 'http://localhost:3001';
+      return process.env.AUTH_BASE_URL || 'http://localhost:3001';
     } else {
-      return 'http://localhost:3000';
+      return process.env.EVENT_BASE_URL || 'http://localhost:3000';
     }
   }
 
@@ -69,7 +69,6 @@ export class ProxyService {
   async patch(path: string, body: any, token?: string) {
     return this.forwardRequest('PATCH', path, token, body);
   }
-
 
   //DELETE 요청 프록시
   async delete(path: string, token?: string) {

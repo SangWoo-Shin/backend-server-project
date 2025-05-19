@@ -42,4 +42,11 @@ export class UserProxyController {
     const token = req.headers['authorization'];
     return this.proxyService.patch(`/users/${id}/role`, body, token);
   }
+
+  @ApiOperation({ summary: '관리자 전용 - 유저 ID로 유저 정보 조회' })
+  @Get('id/:id')
+  getUserById( @Param('id') id: string, @Req() req: Request, ) {
+    const token = req.headers['authorization'];
+    return this.proxyService.get(`/users/id/${id}`, token);
+  }
 }

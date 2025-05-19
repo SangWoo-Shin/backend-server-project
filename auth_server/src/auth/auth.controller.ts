@@ -1,9 +1,11 @@
-import { Controller, Headers, Get, Post, UseGuards, Body, UnauthorizedException } from '@nestjs/common';
+import { Controller, Headers, Param, Get, Post, UseGuards, Body, UnauthorizedException } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { JwtService } from '@nestjs/jwt';
 import { LoginDto } from './dto/login.dto';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { Roles } from './decorators/roles.decorator';
+import { UserRole } from 'src/user/roles.enum';
 
 @ApiTags('Auth')
 @Controller('auth')

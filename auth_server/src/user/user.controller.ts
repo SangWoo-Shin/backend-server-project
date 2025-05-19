@@ -54,4 +54,13 @@ export class UserController {
   ): Promise<User> {
     return this.userService.updateUserRole(id, body.role);
   }
+
+  @ApiBearerAuth()
+  @ApiOperation({ summary: '관리자 전용 - 유저 ID로 유저 정보 조회' })
+  @UseGuards(JwtAuthGuard)
+  @Roles(UserRole.ADMIN)
+  @Get('id/:id')
+  async getUserById(@Param('id') id: string) {
+    return this.userService.findById(id);
+  }
 }
