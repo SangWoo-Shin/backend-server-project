@@ -34,19 +34,21 @@ export class RewardRequestController {
     return this.rewardRequestService.getUserRequests(user.userId);
   }
 
-  @ApiOperation({ summary: "모든 보상 요청 내역 확인 - 관리자, 운영자 그리고 감사자 권한 "})
+  @ApiOperation({ summary: "모든 보상 요청 내역 확인 (상태, 이벤트별 필터링 가능) - 관리자, 운영자 그리고 감사자 권한 "})
   @Roles(UserRole.ADMIN, UserRole.OPERATOR, UserRole.AUDITOR)
   @ApiQuery({ name: 'eventId', required: false, description: '이벤트 ID (선택)' })
   @ApiQuery({ name: 'status', required: false, description: '보상 상태 (PENDING, APPROVED, REJECTED)' })
   @Get('all')
   async getAllRequests(
+    @Req() req: any,
     @Query('eventId') eventId?: string,
     @Query('status') status?: string,
   ) {
-      return this.rewardRequestService.getAllRequests(eventId, status);
+      const token = req.headers['authorization'];
+      return this.rewardRequestService.getAllRequests(eventId, status, token);
   }
 
-  @ApiOperation({ summary: "모든 보상 요청 내역 확인 (상태, 이벤트별 필터링 가능) - 관리자, 운영자 그리고 감사자 권한 "})
+  @ApiOperation({ summary: "요청 승인 상태 변경 - 관리자, 운영자 권한 "})
   @Roles(UserRole.ADMIN, UserRole.OPERATOR)
   @Patch(':id/status/:status')
   async updateStatus(

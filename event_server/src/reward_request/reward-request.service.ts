@@ -19,9 +19,15 @@ export class RewardRequestService {
   // 보상 요청 생성
    async createRequest(eventId: string, rewardId: string, userId: string): Promise<RewardRequest> {
 
+    const now = new Date();
     const event = await this.eventModel.findById(eventId);
+
     if (!event || !event.isActive) {
       throw new NotFoundException('유효하지 않은 이벤트입니다.');
+    }
+
+    if (now < event.startDate || now > event.endDate) {
+      throw new BadRequestException('이벤트 기간이 아닙니다.');
     }
 
     const existing = await this.rewardRequestModel.findOne({ user: userId, eventId, rewardId });
@@ -48,7 +54,7 @@ export class RewardRequestService {
   }
 
   // 전체 요청 조회 (관리자용)
- async getAllRequests(eventId?: string, status?: string): Promise<any[]> {
+ async getAllRequests(eventId?: string, status?: string, token?: string): Promise<any[]> {
   const filter: any = {};
   if (eventId) filter.eventId = new Types.ObjectId(eventId);
   if (status) filter.status = status;
@@ -64,8 +70,11 @@ export class RewardRequestService {
       let userInfo = {};
       try {
         const baseUrl = process.env.AUTH_SERVER_URL || 'http://localhost:3001';
+        const userId = typeof req.user === 'string' ? req.user : req.user.toString();
         const res = await lastValueFrom(
-          this.httpService.get(`${baseUrl}/auth/validate?userId=${req.user}`)
+          this.httpService.get(`${baseUrl}/users/id/${userId}`, {
+            headers: { Authorization: token },
+          })
         );
         userInfo = res.data;
       } catch (e) {
